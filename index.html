@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홀리온 (HolyOn) - 신앙 안의 진실한 만남</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Nanum+Gothic:wght@400;700;800&display=swap');
+
+        :root {
+            --primary: #C5A059;
+            --secondary: #8E2121;
+            --bg-color: #FDFCFB;
+            --text-main: #332D2D;
+            --text-muted: #8A8585;
+            --font-serif: 'Noto Serif KR', serif;
+            --font-main: 'Nanum Gothic', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Nav */
+        nav {
+            padding: 24px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-serif);
+            font-weight: 900;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 10%;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            background: linear-gradient(rgba(253, 252, 251, 0.85), rgba(253, 252, 251, 0.85)), url('christian_dating_hero_1774090798489.png');
+            background-size: cover;
+            min-height: 90vh;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-serif);
+            font-size: 3.8rem;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--secondary);
+            font-weight: 900;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 48px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
+        .btn-start {
+            background: var(--primary);
+            color: white;
+            padding: 20px 56px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            display: inline-block;
+            box-shadow: 0 15px 30px rgba(197, 160, 89, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .btn-start:hover { transform: translateY(-5px); }
+
+        /* Stats Strip */
+        .stats-strip {
+            background: var(--secondary);
+            color: white;
+            padding: 40px 10%;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        .stat-item h2 { font-size: 2.5rem; margin-bottom: 8px; font-family: var(--font-serif); }
+        .stat-item p { font-size: 0.9rem; opacity: 0.8; font-weight: 700; }
+
+        /* Sections */
+        section { padding: 120px 10%; }
+
+        .section-title { text-align: center; margin-bottom: 80px; }
+        .section-title h2 { font-family: var(--font-serif); font-size: 3rem; margin-bottom: 20px; color: var(--secondary); }
+        .section-title p { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* Features */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 32px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+            border: 1px solid transparent;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: #FDF7ED;
+            color: var(--primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+        }
+
+        /* Success Stories (Rich Content) */
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .story-card {
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            background: #eee;
+            aspect-ratio: 4/5;
+        }
+
+        .story-img { width: 100%; height: 100%; object-fit: cover; }
+        .story-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+        }
+
+        /* Sponsorship Strip */
+        .sponsor-list {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            opacity: 0.6;
+            margin-top: 40px;
+        }
+
+        footer {
+            padding: 80px 10%;
+            background: #111;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <i data-lucide="cross"></i>
+            <span>HolyOn</span>
+        </div>
+        <div class="nav-links" style="display: flex; gap: 40px;">
+            <a href="app.html" style="text-decoration: none; color: var(--text-main); font-weight: 800;">앱 미리보기</a>
+            <a href="#features" style="text-decoration: none; color: var(--text-main); font-weight: 800;">주요 기능</a>
+            <a href="#stories" style="text-decoration: none; color: var(--text-main); font-weight: 800;">성혼 스토리</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <div style="background: rgba(197, 160, 89, 0.1); color: var(--primary); padding: 8px 16px; border-radius: 50px; font-weight: 800; font-size: 0.85rem; display: inline-block; margin-bottom: 24px;">신앙이 증명된 고품격 매칭</div>
+            <h1>은혜로 채워지는<br>진실한 만남,<br>홀리온</h1>
+            <p>보여주기식 만남이 아닌, 신앙의 고백을 통해 서로의 영혼을 확인하는 크리스천 전문 공동체입니다.</p>
+            <a href="app.html" class="btn-start">지금 시작하기</a>
+        </div>
+    </header>
+
+    <div class="stats-strip">
+        <div class="stat-item">
+            <h2>4,300+</h2>
+            <p>누적 매칭 성사</p>
+        </div>
+        <div class="stat-item">
+            <h2>128쌍</h2>
+            <p>공식 성혼 기록</p>
+        </div>
+        <div class="stat-item">
+            <h2>98%</h2>
+            <p>신앙관 일치율</p>
+        </div>
+    </div>
+
+    <section id="features">
+        <div class="section-title">
+            <h2>홀리온이 특별한 이유</h2>
+            <p>단순한 연애를 넘어, 같은 천국을 향해 걷는 동반자를 찾습니다.</p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i data-lucide="scroll-text"></i></div>
+                <h3>43가지 신앙 질문</h3>
+                <p>가치관, 경제관, 십일조, 선교 등 깊이 있는 질문을 통해 서로를 이해합니다.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i data-lucide="shield-check"></i></div>
+                <h3>철저한 신원 인증</h3>
+                <p>주요 교단 기반의 검증과 본인 인증을 통해 이단 및 사이비를 철저히 배제합니다.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i data-lucide="heart-handshake"></i></div>
+                <h3>공동체 이벤트</h3>
+                <p>오프라인 도서 나눔, 연합 기도회 등 풍성한 신앙 이벤트를 제공합니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="stories" style="background: #FDFCFB;">
+        <div class="section-title">
+            <h2>아름다운 결실</h2>
+            <p>홀리온을 통해 하나님이 맺어주신 소중한 인연들입니다.</p>
+        </div>
+        <div class="stories-grid">
+            <div class="story-card">
+                <img src="couple_2_married_realistic_locked_1774102844957.png" class="story-img">
+                <div class="story-overlay">
+                    <p style="font-weight: 800;">김OO & 이OO 성도</p>
+                    <p style="font-size: 0.8rem; opacity: 0.8;">"새벽기도를 같이 가는 것이 꿈이었는데 이뤄졌어요."</p>
+                </div>
+            </div>
+            <div class="story-card">
+                <img src="couple_3_engaged_realistic_locked_1774102865589.png" class="story-img">
+                <div class="story-overlay">
+                    <p style="font-weight: 800;">박OO & 최OO 성도</p>
+                    <p style="font-size: 0.8rem; opacity: 0.8;">"가계부와 십일조에 대한 가치관이 일치해 확신이 생겼습니다."</p>
+                </div>
+            </div>
+            <div class="story-card">
+                <img src="couple_1_some_2d_locked_1774102825871.png" class="story-img">
+                <div class="story-overlay">
+                    <p style="font-weight: 800;">새로운 성혼 커플</p>
+                    <p style="font-size: 0.8rem; opacity: 0.8;">"말씀으로 매일 아침을 함께 나누는 기쁨을 누리는 중입니다."</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="sponsor-list">
+            <div style="font-weight: 800; color: #ccc;">매트허브 MATHUB</div>
+            <div style="font-weight: 800; color: #ccc;">서울 기독교 연합회</div>
+            <div style="font-weight: 800; color: #ccc;">대한예수교 장로회</div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo" style="justify-content: center; margin-bottom: 30px; color: var(--primary);">
+            <i data-lucide="cross"></i>
+            <span>HolyOn</span>
+        </div>
+        <p style="opacity: 0.6; margin-bottom: 24px;">© 2026 홀리온. 모든 권리 보유.</p>
+        <div style="display: flex; justify-content: center; gap: 32px; font-size: 0.9rem;">
+            <a href="#" style="color: white; text-decoration: none;">이용약관</a>
+            <a href="#" style="color: white; text-decoration: none; font-weight: 700;">개인정보처리방침</a>
+            <a href="#" style="color: white; text-decoration: none;">후원 문의</a>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

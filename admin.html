@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HolyOn Admin - 관리자 센터 (v2.0 기능 활성화)</title>
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Modal */
+        #details-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: white; padding: 40px; border-radius: 20px; width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 12px 24px; border-radius: 8px;
+            font-weight: 700; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+            z-index: 4000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo-container">
+            <i data-lucide="cross" style="color: var(--accent-gold); width: 28px; height: 28px;"></i>
+            <h2>HolyOn Admin</h2>
+        </div>
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active" onclick="showScreen('dashboard', '대시보드')">
+                <i data-lucide="layout-grid"></i> 대시보드
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('approval', '회원 승인')">
+                <i data-lucide="user-check"></i> 회원 승인 <span class="nav-badge" id="badge-approval">3</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('reports', '신고 관리')">
+                <i data-lucide="alert-circle"></i> 신고 관리 <span class="nav-badge">1</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="file-text"></i> 콘텐츠 모니터링
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="server"></i> 매칭 엔진 설정
+            </a>
+            <a href="#" class="nav-item">
+                <i data-lucide="settings"></i> 시스템 설정
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <h1 id="screen-title">운영 요약</h1>
+            <p class="last-update">최종 갱신: 2026.03.23 00:08</p>
+        </header>
+
+        <!-- SCREEN: DASHBOARD -->
+        <div id="screen-dashboard" class="screen active">
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <p class="stat-label">전체 회원수</p>
+                    <p class="stat-value">1,248 명</p>
+                    <p class="stat-desc" style="color: var(--success);">↑ 12% 증가</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">심사 대기</p>
+                    <p class="stat-value" style="color: var(--warning);" id="stat-pending">3 명</p>
+                    <p class="stat-desc" style="color: var(--text-muted);">24시간 이내 승인 권장</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">신고 접수</p>
+                    <p class="stat-value" style="color: var(--danger);">5 건</p>
+                    <p class="stat-desc" style="color: var(--danger);">긴급 심사 필요</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">누적 매칭 수</p>
+                    <p class="stat-value">8,421 건</p>
+                    <p class="stat-desc" style="color: var(--text-muted);">성도 인연 연결</p>
+                </div>
+            </section>
+
+            <section class="content-card">
+                <div class="card-title">
+                    <span>최근 활동 알림</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <p style="font-size: 0.9rem;"><span style="color: var(--accent-gold); font-weight: 800;">[승인]</span> '베들레헴 양' 성도님이 승인되었습니다. (1분 전)</p>
+                    <p style="font-size: 0.9rem;"><span style="color: var(--danger); font-weight: 800;">[경고]</span> '성락교회 ?' 의심 사용자 탐지 시스템 가동 중.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- SCREEN: APPROVAL (회원 승인) -->
+        <div id="screen-approval" class="screen">
+            <section class="content-card">
+                <div class="card-title">
+                    <span>신규 회원 승인 대기열 (Verification)</span>
+                    <input type="text" class="search-bar" id="search-input" placeholder="이름/교회 검색..." onkeyup="filterTable()">
+                </div>
+                <table id="user-table">
+                    <thead>
+                        <tr>
+                            <th>가입일</th>
+                            <th>닉네임</th>
+                            <th>성별/연령</th>
+                            <th>교회 및 교단</th>
+                            <th>MBTI</th>
+                            <th>상태</th>
+                            <th>액션</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-list">
+                        <!-- JS handles data -->
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <!-- SCREEN: REPORTS -->
+        <div id="screen-reports" class="screen">
+            <section class="content-card">
+                <div class="card-title"><span>미처리 신고 내역</span></div>
+                <p style="color: var(--text-muted); text-align: center; padding: 40px;">현재 접수된 고가용성 신고가 없습니다.</p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="details-modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 id="modal-name" style="font-family: var(--font-serif); font-weight: 900; margin-bottom: 20px;"></h2>
+            <div id="modal-body" style="font-size: 0.95rem; line-height: 1.8; color: #555;">
+                <!-- Content here -->
+            </div>
+            <button onclick="closeModal()" style="margin-top: 30px; width: 100%; padding: 12px; border:none; background: var(--sidebar-bg); color: white; border-radius: 8px; font-weight: 700;">닫기</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast">메시지가 처리되었습니다.</div>
+
+    <script>
+        lucide.createIcons();
+
+        // Sample Data
+        let users = [
+            { id: 1, date: '2026-03-21', name: '베들레헴 양', gender: '여 / 28', church: '사랑의 교회 (예장 합동)', mbti: 'INFJ', status: '심사 중' },
+            { id: 2, date: '2026-03-21', name: '기도하는 나그네', gender: '남 / 32', church: '벧엘 교회 (기감)', mbti: 'ENFP', status: '심사 중' },
+            { id: 3, date: '2026-03-21', name: '찬양하는 꽃사슴', gender: '여 / 24', church: '성락교회 (?)', mbti: 'ENTJ', status: '이단 의심' }
+        ];
+
+        function renderUsers() {
+            const list = document.getElementById('user-list');
+            list.innerHTML = '';
+            users.forEach(u => {
+                const row = document.createElement('tr');
+                const statusClass = u.status === '이단 의심' ? 'status-warning' : 'status-pending';
+                row.innerHTML = `
+                    <td>${u.date}</td>
+                    <td style="font-weight: 700;">${u.name}</td>
+                    <td>${u.gender}</td>
+                    <td>${u.church}</td>
+                    <td>${u.mbti}</td>
+                    <td><span class="user-status ${statusClass}">${u.status}</span></td>
+                    <td>
+                        <button class="btn-action btn-approve" onclick="actionUser(${u.id}, '승인')">${u.status === '이단 의심' ? '허용' : '승인'}</button>
+                        <button class="btn-action ${u.status === '이단 의심' ? 'btn-block' : 'btn-view'}" onclick="${u.status === '이단 의심' ? `actionUser(${u.id}, '차단')` : `viewDetails(${u.id})`}">${u.status === '이단 의심' ? '차단' : '상세'}</button>
+                    </td>
+                `;
+                list.appendChild(row);
+            });
+            updateBadges();
+        }
+
+        function showScreen(screenId, title) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById('screen-' + screenId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            document.getElementById('screen-title').innerText = title;
+            lucide.createIcons();
+        }
+
+        function actionUser(id, action) {
+            const name = users.find(u => u.id === id).name;
+            users = users.filter(u => u.id !== id);
+            renderUsers();
+            showToast(`'${name}' 성도님이 ${action}되었습니다.`);
+        }
+
+        function viewDetails(id) {
+            const u = users.find(x => x.id === id);
+            document.getElementById('modal-name').innerText = u.name + " 정보";
+            document.getElementById('modal-body').innerHTML = `
+                <p><b>가입 경로:</b> 지인 추천</p>
+                <p><b>세례 여부:</b> 유아 세례 / 20년 전</p>
+                <p><b>특이사항:</b> 찬양 사역 경력 5년, 최근 선교 활동 참여.</p>
+                <p style="margin-top: 10px; color: var(--accent-gold);">"신앙 질문 43개 답변이 매우 성실합니다."</p>
+            `;
+            document.getElementById('details-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('details-modal').style.display = 'none';
+        }
+
+        function filterTable() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const rows = document.querySelectorAll('#user-list tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        function updateBadges() {
+            document.getElementById('badge-approval').innerText = users.length;
+            document.getElementById('stat-pending').innerText = users.length + " 명";
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.opacity = '1';
+            setTimeout(() => t.style.opacity = '0', 3000);
+        }
+
+        // Init
+        renderUsers();
+    </script>
+</body>
+
+</html>

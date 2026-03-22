@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>HolyOn - 크리스찬 데이팅앱 홀리온</title>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Nanum+Gothic:wght@400;700;800&display=swap');
+:root{--g:#C5A059;--r:#8E2121;--bg:#FDFCFB;--t:#332D2D;--m:#8A8585;--sf:'Noto Serif KR',serif;--sn:'Nanum Gothic',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--sn);background:var(--bg);color:var(--t);overflow:hidden;height:100vh;display:flex;flex-direction:column;}
+
+.hdr{padding:14px 16px 10px;background:rgba(253,252,251,0.96);backdrop-filter:blur(10px);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-bottom:1px solid rgba(197,160,89,0.1);z-index:100;}
+.logo-box{display:flex;flex-direction:column;}
+.logo-main{font-family:var(--sf);font-weight:900;font-size:1.6rem;color:var(--g);letter-spacing:0.02em;}
+.logo-sub{font-size:0.55rem;color:var(--m);font-weight:700;letter-spacing:0.1em;}
+.pay-btn{font-size:0.7rem;font-weight:800;color:var(--r);background:rgba(142,33,33,0.08);padding:6px 12px;border-radius:8px;border:1px solid rgba(142,33,33,0.15);cursor:pointer;text-decoration:none;}
+
+main{flex:1;overflow-y:auto;padding:0 16px 105px;}
+.scr{display:none;animation:fu 0.3s ease-out;}
+.scr.on{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.sh{margin:24px 0 10px;display:flex;align-items:center;gap:8px;}
+.sh h3{font-family:var(--sf);font-size:1rem;color:var(--r);font-weight:800;white-space:nowrap;}
+.sl{flex:1;height:1px;background:var(--g);opacity:0.12;}
+.cd{background:#fff;border-radius:14px;border:1px solid #f0f0f0;overflow:hidden;}
+
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px;}
+.sb{background:#fff;border-radius:12px;padding:12px 6px;text-align:center;border:1px solid #eee;}
+.sn{font-size:1.2rem;font-weight:900;color:var(--r);}
+.slb{font-size:0.55rem;color:var(--m);font-weight:700;margin-top:3px;}
+
+.ai-hero{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.05);position:relative;margin-top:12px;}
+.ai-hero img{width:100%;height:240px;object-fit:cover;}
+.ai-bd{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#C5A059,#E8D5A8);color:#332D2D;padding:4px 10px;border-radius:50px;font-size:0.55rem;font-weight:900;display:flex;align-items:center;gap:4px;}
+.ai-info{padding:12px;}
+.ai-btn{width:100%;padding:12px;border:none;background:var(--r);color:#fff;border-radius:10px;font-weight:800;font-size:0.85rem;cursor:pointer;}
+
+.g4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+.pc{position:relative;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;}
+.pi{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;}
+.pb{position:absolute;top:8px;right:8px;color:#fff;padding:2px 6px;border-radius:50px;font-size:0.48rem;font-weight:800;}
+.pb-2d{background:var(--g);}
+.pb-pr{background:var(--r);}
+.pf{padding:8px 10px;}
+.pn{font-weight:800;font-size:0.78rem;}
+.ps{font-size:0.58rem;color:var(--m);margin-top:2px;}
+.pm{font-size:0.55rem;color:var(--g);font-weight:800;margin-top:2px;}
+
+/* Blessing Table */
+.bl-table{width:100%;border-collapse:collapse;margin-top:10px;}
+.bl-table td{padding:10px 8px;border-bottom:1px solid #f5f5f5;vertical-align:middle;font-size:0.78rem;}
+.bl-img{width:50px;height:50px;border-radius:12px;object-fit:cover;}
+.bl-tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:0.55rem;font-weight:800;margin-bottom:3px;}
+
+/* Support Product */
+.sup-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;margin-top:10px;}
+.sup-scroll::-webkit-scrollbar{display:none;}
+.sup-item{min-width:140px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;flex-shrink:0;}
+.sup-img{width:100%;height:100px;object-fit:cover;}
+.sup-info{padding:8px;}
+
+/* Partner Section */
+.ptr-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;margin-top:8px;}
+.ptr-scroll::-webkit-scrollbar{display:none;}
+.ptr-chip{background:#fff;padding:8px 12px;border-radius:20px;border:1px solid #eee;font-size:0.68rem;font-weight:700;white-space:nowrap;flex-shrink:0;}
+
+.bnav{position:fixed;bottom:0;width:100%;height:75px;background:rgba(255,255,255,0.97);backdrop-filter:blur(15px);display:flex;justify-content:space-around;align-items:center;padding-bottom:14px;border-top:1px solid rgba(197,160,89,0.1);z-index:200;}
+.nb{display:flex;flex-direction:column;align-items:center;color:var(--m);font-size:0.5rem;font-weight:600;cursor:pointer;gap:2px;}
+.nb.on{color:var(--g);}
+.nb i{width:18px;height:18px;}
+
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 18px;border-radius:8px;font-size:0.75rem;font-weight:700;opacity:0;transition:opacity 0.3s;z-index:500;pointer-events:none;}
+.mbg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:400;align-items:center;justify-content:center;}
+.mbx{background:#fff;width:90%;max-width:380px;border-radius:20px;padding:24px;}
+
+.pray-card{background:#fff;border-radius:14px;padding:14px;border:1px solid #eee;margin-bottom:8px;}
+.pray-a{border-left:4px solid var(--g);}
+.pray-r{border-left:4px solid var(--r);}
+
+.fp{margin-bottom:12px;}
+.fh{display:flex;align-items:center;gap:8px;padding:10px;}
+.fa2{width:32px;height:32px;border-radius:50%;object-fit:cover;}
+.fi2{width:100%;aspect-ratio:1/1;object-fit:cover;}
+.fx2{display:flex;gap:12px;padding:8px 10px;}
+.fx2 i{width:18px;height:18px;cursor:pointer;}
+.kakao-fab{position:fixed;bottom:90px;right:16px;width:50px;height:50px;background:#FEE500;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:300;cursor:pointer;font-size:1.2rem;}
+.feat-scroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:8px;padding-bottom:4px;}
+.feat-scroll::-webkit-scrollbar{display:none;}
+.feat-chip{background:rgba(197,160,89,0.12);color:var(--g);padding:5px 10px;border-radius:20px;font-size:0.55rem;font-weight:800;white-space:nowrap;flex-shrink:0;}
+.bell-wrap{position:relative;cursor:pointer;}
+.bell-dot{position:absolute;top:-2px;right:-2px;width:7px;height:7px;background:var(--r);border-radius:50%;}
+.my-menu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
+.my-menu-item{background:#fff;border-radius:14px;padding:14px 8px;text-align:center;border:1px solid #eee;cursor:pointer;}
+.my-menu-item i{color:var(--g);margin-bottom:6px;}
+.test-card{background:#fff;border-radius:16px;padding:16px;border:1px solid #eee;margin-bottom:10px;}
+.test-q{font-size:0.82rem;font-weight:700;margin-bottom:10px;}
+.test-opt{display:flex;flex-direction:column;gap:6px;}
+.test-btn{padding:10px;border:1px solid #eee;border-radius:10px;font-size:0.78rem;cursor:pointer;background:#fff;text-align:left;transition:all 0.2s;}
+.test-btn:hover{border-color:var(--g);background:rgba(197,160,89,0.05);}
+.test-btn.sel{border-color:var(--g);background:rgba(197,160,89,0.1);font-weight:700;}
+.result-card{background:linear-gradient(135deg,#332D2D,#4a3a2a);color:#fff;border-radius:20px;padding:24px;text-align:center;display:none;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+    <div class="logo-box">
+        <span class="logo-main">HolyOn</span>
+        <span class="logo-sub">크리스찬 데이팅앱 홀리온</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+        <div class="bell-wrap" onclick="showToast('새 매칭 알림 2건, 기도 응답 1건')"><i data-lucide="bell" style="color:var(--m);width:20px;"></i><span class="bell-dot"></span></div>
+        <a class="pay-btn" onclick="showToast('결제 페이지 준비 중입니다.')">결제하기</a>
+    </div>
+</header>
+
+<main>
+
+<!-- ===== HOME ===== -->
+<div id="s-home" class="scr on">
+
+<!-- 상단 말씀 배너 -->
+<div style="background:linear-gradient(135deg,#332D2D,#4a3a2a);border-radius:16px;padding:16px;margin-top:12px;text-align:center;">
+    <p style="font-family:var(--sf);color:#fff;font-size:1rem;line-height:1.6;">"내가 거룩하니 너희도 거룩하라"</p>
+    <p style="color:var(--g);font-size:0.65rem;font-weight:700;margin-top:4px;">베드로전서 1:16</p>
+</div>
+<!-- 핵심 시스템 뱃지 -->
+<div class="feat-scroll">
+    <span class="feat-chip">🇰🇷 국내최초 신앙성향매칭</span>
+    <span class="feat-chip">🧬 국내최초 NBTI매칭시스템</span>
+    <span class="feat-chip">💒 국내최초 결혼격려후원시스템</span>
+    <span class="feat-chip">📰 국내최초 신앙피드</span>
+    <span class="feat-chip">📖 국내최초 큐티나눔</span>
+    <span class="feat-chip">🙏 국내최초 중보기도응답시스템</span>
+</div>
+
+<div class="sh"><h3>현재 매칭 현황</h3><div class="sl"></div></div>
+<div class="stat-row">
+    <div class="sb"><p class="sn">128</p><p class="slb">총 매칭(쌍)</p></div>
+    <div class="sb"><p class="sn">42</p><p class="slb">깊은 대화</p></div>
+    <div class="sb"><p class="sn">31</p><p class="slb">교제중</p></div>
+    <div class="sb"><p class="sn" style="color:var(--g);">8</p><p class="slb">식장예약</p></div>
+    <div class="sb"><p class="sn" style="color:#10B981;">15</p><p class="slb">결혼완료</p></div>
+</div>
+
+<div class="sh"><h3>AI 추천 매칭</h3><div class="sl"></div></div>
+<div class="ai-hero" onclick="openProfile('은혜','27','강남은혜교회 · 찬양사역','97%','ENFP','교사','시편 23편','주님, 좋은 배우자를 만나게 해주세요')">
+    <img src="ai_recommend_profile.png">
+    <span class="ai-bd"><i data-lucide="sparkles" style="width:11px;height:11px;"></i> AI 추천</span>
+    <div class="ai-info">
+        <p style="font-weight:900;font-size:1rem;">은혜 (27) · ENFP <span style="font-size:0.65rem;color:var(--g);font-weight:700;">97%</span></p>
+        <p style="font-size:0.7rem;color:var(--m);margin-top:3px;">강남은혜교회 · 교사 · 찬양 사역자</p>
+        <p style="font-size:0.62rem;color:var(--g);margin-top:4px;">📖 "여호와는 나의 목자시니 내게 부족함이 없으리로다"</p>
+        <button class="ai-btn" style="margin-top:10px;" onclick="event.stopPropagation();showToast('은혜 성도님에게 대화를 신청했습니다!')">대화 신청하기</button>
+    </div>
+</div>
+
+<div class="sh"><h3>추천 성도님</h3><div class="sl"></div></div>
+<div class="g4">
+    <div class="pc" onclick="openProfile('다윗','32','벧엘교회 · 집사','92%','INFJ','소프트웨어 개발자','로마서 8:28','가정의 영적 리더가 되게 해주세요')"><img src="david_2d_profile.png" class="pi"><span class="pb pb-2d">2D</span><div class="pf"><p class="pn">다윗 (32) · INFJ</p><p class="ps">벧엘교회 · 개발자</p><p class="pm">일치율 92%</p></div></div>
+    <div class="pc" onclick="openProfile('에스더','28','사랑의교회 · 반주','88%','ISFJ','디자이너','잠언 31:30','주님 뜻대로 살게 해주세요')"><img src="esther_2d_profile.png" class="pi"><span class="pb pb-2d">2D</span><div class="pf"><p class="pn">에스더 (28) · ISFJ</p><p class="ps">사랑의교회 · 디자이너</p><p class="pm">일치율 88%</p></div></div>
+    <div class="pc" onclick="openProfile('조슈아','30','숭실교회 · 사역','95%','ENTJ','마케팅 매니저','여호수아 1:9','선교의 비전을 이루게 해주세요')"><img src="realistic_male_profile.png" class="pi"><span class="pb pb-pr">PREMIUM</span><div class="pf"><p class="pn">조슈아 (30) · ENTJ</p><p class="ps">숭실교회 · 마케터</p><p class="pm">일치율 95%</p></div></div>
+    <div class="pc" onclick="openProfile('한나','29','은혜교회 · 팀장','90%','ENFJ','간호사','빌립보서 4:13','믿음의 가정을 이루게 해주세요')"><img src="realistic_female_profile.png" class="pi"><span class="pb pb-pr">PREMIUM</span><div class="pf"><p class="pn">한나 (29) · ENFJ</p><p class="ps">은혜교회 · 간호사</p><p class="pm">일치율 90%</p></div></div>
+</div>
+
+<!-- 축복의 소식 (표 + 커플사진) -->
+<div class="sh"><h3>축복의 소식</h3><div class="sl"></div></div>
+<div class="cd">
+<table class="bl-table">
+<tr><td><img src="couple_blessing_1.png" class="bl-img"></td><td><span class="bl-tag" style="background:#332D2D;color:#fff;">결혼</span><br><b>강하늘 & 최지우</b><br><span style="font-size:0.62rem;color:var(--m);">2026.03.15 · 서울 포시즌스</span></td><td style="text-align:right;font-size:0.6rem;color:var(--g);font-weight:800;">축하 128명</td></tr>
+<tr><td><img src="couple_blessing_2.png" class="bl-img"></td><td><span class="bl-tag" style="background:var(--g);color:#fff;">약혼</span><br><b>이동욱 & 김태희</b><br><span style="font-size:0.62rem;color:var(--m);">2026.03.20 · 분당우리교회</span></td><td style="text-align:right;font-size:0.6rem;color:var(--g);font-weight:800;">축하 85명</td></tr>
+<tr><td><img src="couple_blessing_1.png" class="bl-img"></td><td><span class="bl-tag" style="background:#FFF5F5;color:var(--r);">교제</span><br><b>김수현 & 아이유</b><br><span style="font-size:0.62rem;color:var(--m);">2026.03.18 · 매칭 후 교제 시작</span></td><td style="text-align:right;font-size:0.6rem;color:var(--r);font-weight:800;">응원 62명</td></tr>
+<tr><td><img src="couple_blessing_2.png" class="bl-img"></td><td><span class="bl-tag" style="background:#332D2D;color:#fff;">결혼</span><br><b>현빈 & 손예진</b><br><span style="font-size:0.62rem;color:var(--m);">2026.03.10 · 강남은혜교회</span></td><td style="text-align:right;font-size:0.6rem;color:var(--g);font-weight:800;">축하 210명</td></tr>
+<tr><td><img src="couple_blessing_1.png" class="bl-img"></td><td><span class="bl-tag" style="background:var(--g);color:#fff;">매칭</span><br><b>정해인 & 윤아</b><br><span style="font-size:0.62rem;color:var(--m);">2026.03.22 · 찬양 비전 연결</span></td><td style="text-align:right;font-size:0.6rem;color:var(--g);font-weight:800;">응원 34명</td></tr>
+</table>
+</div>
+
+<!-- 예배/집회 소식 -->
+<div class="sh"><h3>예배 · 집회 소식</h3><div class="sl"></div></div>
+<div class="cd" style="padding:12px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f5f5;"><div style="width:42px;height:42px;border-radius:10px;background:rgba(142,33,33,0.08);display:flex;align-items:center;justify-content:center;"><i data-lucide="mic" style="color:var(--r);width:18px;"></i></div><div style="flex:1;"><p style="font-weight:700;font-size:0.8rem;">청년 연합 금요 찬양 집회</p><p style="font-size:0.6rem;color:var(--m);">금요일 20:00 · 강남 은혜성전</p></div></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f5f5;"><div style="width:42px;height:42px;border-radius:10px;background:rgba(197,160,89,0.1);display:flex;align-items:center;justify-content:center;"><i data-lucide="book-open" style="color:var(--g);width:18px;"></i></div><div style="flex:1;"><p style="font-weight:700;font-size:0.8rem;">부활절 특별 새벽 예배</p><p style="font-size:0.6rem;color:var(--m);">4월 6일 05:30 · 분당우리교회</p></div></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;"><div style="width:42px;height:42px;border-radius:10px;background:rgba(16,185,129,0.08);display:flex;align-items:center;justify-content:center;"><i data-lucide="users" style="color:#10B981;width:18px;"></i></div><div style="flex:1;"><p style="font-weight:700;font-size:0.8rem;">크리스천 싱글 연합 수련회</p><p style="font-size:0.6rem;color:var(--m);">4월 12~13일 · 양평 은혜수양관</p></div></div>
+</div>
+
+<!-- 결혼 응원 후원 -->
+<div class="sh"><h3>결혼 응원 후원</h3><div class="sl"></div></div>
+<div class="sup-scroll">
+    <div class="sup-item" onclick="showToast('후원 참여 감사합니다!')"><img src="support_baby_mat.png" class="sup-img"><div class="sup-info"><p style="font-weight:800;font-size:0.72rem;">매트링크 유아매트</p><p style="font-size:0.55rem;color:var(--m);margin-top:2px;">강하늘 & 최지우 부부</p><p style="font-size:0.52rem;color:var(--g);font-weight:700;margin-top:3px;">후원 62명</p></div></div>
+    <div class="sup-item" onclick="showToast('후원 참여 감사합니다!')"><img src="support_prayer_cushion.png" class="sup-img"><div class="sup-info"><p style="font-weight:800;font-size:0.72rem;">하늘매트 기도방석</p><p style="font-size:0.55rem;color:var(--m);margin-top:2px;">이동욱 & 김태희 부부</p><p style="font-size:0.52rem;color:var(--g);font-weight:700;margin-top:3px;">후원 38명</p></div></div>
+    <div class="sup-item" onclick="showToast('후원 참여 감사합니다!')"><img src="support_pet_carseat.png" class="sup-img"><div class="sup-info"><p style="font-weight:800;font-size:0.72rem;">하스펫 강아지카시트</p><p style="font-size:0.55rem;color:var(--m);margin-top:2px;">현빈 & 손예진 부부</p><p style="font-size:0.52rem;color:var(--g);font-weight:700;margin-top:3px;">후원 45명</p></div></div>
+    <div class="sup-item" onclick="showToast('후원 참여 감사합니다!')"><img src="support_sleeping_bag.png" class="sup-img"><div class="sup-info"><p style="font-weight:800;font-size:0.72rem;">하늘바람교회 침낭</p><p style="font-size:0.55rem;color:var(--m);margin-top:2px;">박보검 & 수지 부부</p><p style="font-size:0.52rem;color:var(--g);font-weight:700;margin-top:3px;">후원 21명</p></div></div>
+    <div class="sup-item" onclick="showToast('후원 참여 감사합니다!')"><img src="support_baby_mat.png" class="sup-img"><div class="sup-info"><p style="font-weight:800;font-size:0.72rem;">은혜출산 선물세트</p><p style="font-size:0.55rem;color:var(--m);margin-top:2px;">김하늘 성도 축하</p><p style="font-size:0.52rem;color:var(--g);font-weight:700;margin-top:3px;">후원 15명</p></div></div>
+    <div class="sup-item" onclick="showToast('후원 참여 감사합니다!')"><img src="support_fruit_basket.png" class="sup-img"><div class="sup-info"><p style="font-weight:800;font-size:0.72rem;">감사 과일바구니</p><p style="font-size:0.55rem;color:var(--m);margin-top:2px;">이은혜 성도 축하</p><p style="font-size:0.52rem;color:var(--g);font-weight:700;margin-top:3px;">후원 28명</p></div></div>
+    <div class="sup-item" onclick="showToast('부동산 수수료 지원 문의!')"><div class="sup-img" style="background:var(--g);display:flex;align-items:center;justify-content:center;height:100px;"><span style="font-size:2rem;">🏠</span></div><div class="sup-info"><p style="font-weight:800;font-size:0.72rem;">부동산 수수료 지원</p><p style="font-size:0.55rem;color:var(--m);margin-top:2px;">김영복 집사님 제공</p><p style="font-size:0.52rem;color:var(--g);font-weight:700;margin-top:3px;">신혼부부 0.3% 할인</p></div></div>
+    <div class="sup-item" onclick="showToast('보험 상담 지원 문의!')"><div class="sup-img" style="background:var(--r);display:flex;align-items:center;justify-content:center;height:100px;"><span style="font-size:2rem;">🛡️</span></div><div class="sup-info"><p style="font-weight:800;font-size:0.72rem;">보험 상담 지원</p><p style="font-size:0.55rem;color:var(--m);margin-top:2px;">박은총 집사님 제공</p><p style="font-size:0.52rem;color:var(--g);font-weight:700;margin-top:3px;">무료 재무 설계</p></div></div>
+</div>
+
+<!-- 함께하는 교회 -->
+<div class="sh"><h3>함께하는 교회</h3><div class="sl"></div></div>
+<div class="ptr-scroll">
+    <div class="ptr-chip">강남은혜교회</div><div class="ptr-chip">분당우리교회</div><div class="ptr-chip">사랑의교회</div><div class="ptr-chip">벧엘교회</div><div class="ptr-chip">숭실교회</div><div class="ptr-chip">은혜교회</div><div class="ptr-chip">여의도순복음</div><div class="ptr-chip">명성교회</div><div class="ptr-chip">우리들교회</div><div class="ptr-chip">소망교회</div>
+</div>
+
+<!-- 함께하는 기관 -->
+<div class="sh"><h3>함께하는 기관</h3><div class="sl"></div></div>
+<div class="ptr-scroll">
+    <div class="ptr-chip">서울기독연합</div><div class="ptr-chip">해외선교회</div><div class="ptr-chip">CCC</div><div class="ptr-chip">IVF</div><div class="ptr-chip">KWMA</div><div class="ptr-chip">한국기독교총연합</div><div class="ptr-chip">대한성서공회</div><div class="ptr-chip">기독교윤리실천운동</div><div class="ptr-chip">한동대학교</div><div class="ptr-chip">총신대학교</div>
+</div>
+
+<!-- 함께하는 기업 -->
+<div class="sh"><h3>함께하는 기업</h3><div class="sl"></div></div>
+<div class="ptr-scroll">
+    <div class="ptr-chip">매트허브</div><div class="ptr-chip">홀리마켓</div><div class="ptr-chip">매트링크</div><div class="ptr-chip">하늘매트</div><div class="ptr-chip">하스펫</div><div class="ptr-chip">갓피플</div><div class="ptr-chip">두란노</div><div class="ptr-chip">규장</div><div class="ptr-chip">이레디자인</div><div class="ptr-chip">성경앱 YouVersion</div>
+</div>
+
+<!-- 함께하는 성도 -->
+<div class="sh"><h3>함께하는 성도</h3><div class="sl"></div></div>
+<div class="ptr-scroll">
+    <div class="ptr-chip">김하늘 집사</div><div class="ptr-chip">이동욱 집사</div><div class="ptr-chip">박유진 권사</div><div class="ptr-chip">최은혜 성도</div><div class="ptr-chip">정민준 성도</div><div class="ptr-chip">강세라 전도사</div><div class="ptr-chip">윤다윗 목사</div><div class="ptr-chip">한사라 성도</div><div class="ptr-chip">조나단 집사</div><div class="ptr-chip">임소망 성도</div>
+</div>
+
+</div>
+
+<!-- ===== FEED ===== -->
+<div id="s-feed" class="scr">
+<div class="sh"><h3>공동체 피드</h3><div class="sl"></div></div>
+<div class="cd fp"><div class="fh"><img src="esther_2d_profile.png" class="fa2"><div><p style="font-weight:700;font-size:0.78rem;">에스더 · ISFJ</p><p style="font-size:0.55rem;color:var(--m);">2시간 전 · 사랑의교회 · 디자이너</p></div></div><img src="feed_morning_qt_1774102199678.png" class="fi2"><div class="fx2"><i data-lucide="heart" onclick="toggleLike(this)"></i><i data-lucide="message-circle"></i><i data-lucide="share-2"></i></div><div style="padding:0 10px 10px;font-size:0.8rem;"><b>에스더</b> 새벽 기도 다녀왔습니다 🙏<p style="color:var(--m);font-size:0.65rem;margin-top:3px;">좋아요 24개 · 댓글 5개</p></div></div>
+<div class="cd fp"><div class="fh"><img src="realistic_male_profile.png" class="fa2"><div><p style="font-weight:700;font-size:0.78rem;">조슈아 · ENTJ</p><p style="font-size:0.55rem;color:var(--m);">5시간 전 · 숭실교회 · 마케터</p></div></div><img src="feed_hiking_nature_1774102236274.png" class="fi2"><div class="fx2"><i data-lucide="heart" onclick="toggleLike(this)"></i><i data-lucide="message-circle"></i><i data-lucide="share-2"></i></div><div style="padding:0 10px 10px;font-size:0.8rem;"><b>조슈아</b> 자연 속 묵상의 시간 #창조<p style="color:var(--m);font-size:0.65rem;margin-top:3px;">좋아요 18개 · 댓글 3개</p></div></div>
+</div>
+
+<!-- ===== BIBLE ===== -->
+<div id="s-bible" class="scr">
+<!-- QT 말씀 with BG -->
+<div style="position:relative;border-radius:18px;overflow:hidden;margin-top:14px;">
+    <img src="qt_verse_bg.png" style="width:100%;height:220px;object-fit:cover;">
+    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;">
+        <p style="font-size:0.6rem;color:rgba(255,255,255,0.8);font-weight:700;margin-bottom:10px;">오늘의 QT · 2026년 3월 23일 주일</p>
+        <p style="font-family:var(--sf);font-size:1.15rem;line-height:1.7;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.3);margin-bottom:10px;">"내가 거룩하니<br>너희도 거룩하라"</p>
+        <p style="color:var(--g);font-weight:700;font-size:0.78rem;">베드로전서 1장 16절</p>
+    </div>
+</div>
+<div class="cd" style="padding:16px;margin-top:10px;line-height:1.7;font-size:0.82rem;color:#555;">
+    <p style="font-weight:800;margin-bottom:8px;color:var(--r);">오늘의 묵상</p>
+    <p>하나님께서는 우리에게 거룩함을 요구하십니다. 이는 완벽함이 아니라, 하나님을 향한 마음의 방향입니다.</p>
+    <p style="margin-top:6px;">세상은 우리를 끊임없이 타협하게 만들지만, 거룩함은 작은 순종에서 시작됩니다. 매일의 기도와 말씀 묵상이 그 첫걸음입니다.</p>
+    <p style="margin-top:6px;">오늘 하루, 내 삶에서 하나님을 기쁘시게 할 한 가지를 실천해 보세요. 그것이 바로 거룩함의 시작입니다.</p>
+</div>
+
+<!-- 성경통독 -->
+<div class="sh"><h3>📖 성경통독</h3><div class="sl"></div></div>
+<div class="cd" style="padding:14px;">
+    <p style="font-weight:800;font-size:0.82rem;color:var(--r);margin-bottom:8px;">구약 39권</p>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;">
+        <span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">창세기</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">출애굽기</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">레위기</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">민수기</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">신명기</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">여호수아</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">사사기</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">룻기</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">사무엘상</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">사무엘하</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">열왕기상</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">열왕기하</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">역대상</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">역대하</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">에스라</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">느헤미야</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">에스더</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">욥기</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">시편</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">잠언</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">전도서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">아가</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">이사야</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">예레미야</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">예레미야애가</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">에스겔</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">다니엘</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">호세아</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">요엘</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">아모스</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">오바댜</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">요나</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">미가</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">나훔</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">하박국</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">스바냐</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">학개</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">스가랴</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#f0ebe3;">말라기</span>
+    </div>
+    <p style="font-weight:800;font-size:0.82rem;color:var(--r);margin:12px 0 8px;">신약 27권</p>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;">
+        <span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">마태복음</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">마가복음</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">누가복음</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">요한복음</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">사도행전</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">로마서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">고린도전서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">고린도후서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">갈라디아서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">에베소서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">빌립보서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">골로새서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">데살로니가전서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">데살로니가후서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">디모데전서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">디모데후서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">디도서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">빌레몬서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">히브리서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">야고보서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">베드로전서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">베드로후서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">요한1서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">요한2서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">요한3서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">유다서</span><span class="ptr-chip" style="font-size:0.55rem;padding:4px 8px;background:#fdf7ed;">요한계시록</span>
+    </div>
+</div>
+
+<!-- 추천 설교 (YouTube) -->
+<div class="sh"><h3>추천 설교</h3><div class="sl"></div></div>
+<div class="ptr-scroll">
+    <a href="https://youtube.com" target="_blank" style="text-decoration:none;min-width:160px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;flex-shrink:0;"><div style="height:90px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;"><i data-lucide="play-circle" style="color:var(--g);width:32px;height:32px;"></i></div><div style="padding:8px;"><p style="font-weight:800;font-size:0.7rem;color:var(--t);">두려움을 이기는 믿음</p><p style="font-size:0.55rem;color:var(--m);">이찬수 목사 · 32분</p></div></a>
+    <a href="https://youtube.com" target="_blank" style="text-decoration:none;min-width:160px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;flex-shrink:0;"><div style="height:90px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;"><i data-lucide="play-circle" style="color:var(--g);width:32px;height:32px;"></i></div><div style="padding:8px;"><p style="font-weight:800;font-size:0.7rem;color:var(--t);">사랑의 언어, 십자가</p><p style="font-size:0.55rem;color:var(--m);">조용기 목사 · 45분</p></div></a>
+    <a href="https://youtube.com" target="_blank" style="text-decoration:none;min-width:160px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;flex-shrink:0;"><div style="height:90px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;"><i data-lucide="play-circle" style="color:var(--g);width:32px;height:32px;"></i></div><div style="padding:8px;"><p style="font-weight:800;font-size:0.7rem;color:var(--t);">하나님의 시간표</p><p style="font-size:0.55rem;color:var(--m);">김남국 목사 · 28분</p></div></a>
+</div>
+
+<!-- 추천 영상 (청년결혼) -->
+<div class="sh"><h3>추천 영상</h3><div class="sl"></div></div>
+<div class="ptr-scroll">
+    <a href="https://youtube.com" target="_blank" style="text-decoration:none;min-width:160px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;flex-shrink:0;"><div style="height:90px;background:var(--r);display:flex;align-items:center;justify-content:center;"><i data-lucide="video" style="color:#fff;width:28px;height:28px;"></i></div><div style="padding:8px;"><p style="font-weight:800;font-size:0.7rem;color:var(--t);">크리스천 결혼 준비 A to Z</p><p style="font-size:0.55rem;color:var(--m);">청년 결혼 가이드</p></div></a>
+    <a href="https://youtube.com" target="_blank" style="text-decoration:none;min-width:160px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;flex-shrink:0;"><div style="height:90px;background:var(--r);display:flex;align-items:center;justify-content:center;"><i data-lucide="video" style="color:#fff;width:28px;height:28px;"></i></div><div style="padding:8px;"><p style="font-weight:800;font-size:0.7rem;color:var(--t);">신앙이 다른 배우자 만나면?</p><p style="font-size:0.55rem;color:var(--m);">목사님 토크</p></div></a>
+    <a href="https://youtube.com" target="_blank" style="text-decoration:none;min-width:160px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;flex-shrink:0;"><div style="height:90px;background:var(--r);display:flex;align-items:center;justify-content:center;"><i data-lucide="video" style="color:#fff;width:28px;height:28px;"></i></div><div style="padding:8px;"><p style="font-weight:800;font-size:0.7rem;color:var(--t);">20대 결혼 재정 플랜</p><p style="font-size:0.55rem;color:var(--m);">크리스천 재무 상담</p></div></a>
+</div>
+</div>
+
+<!-- ===== PRAYER ===== -->
+<div id="s-pray" class="scr">
+<div class="sh"><h3>🙏 기도 응답</h3><div class="sl"></div></div>
+<div class="pray-card pray-a"><p style="font-weight:800;font-size:0.85rem;color:var(--g);">✨ 응답된 기도</p><p style="font-size:0.8rem;margin-top:6px;line-height:1.4;">"취업 6개월 기도 후 합격 소식! 함께 기도해주신 성도님들 감사합니다!"</p><p style="font-size:0.65rem;color:var(--m);margin-top:6px;">— 김하늘 성도 · 3일 전 · 🙏 128명 참여</p></div>
+<div class="pray-card pray-a"><p style="font-weight:800;font-size:0.85rem;color:var(--g);">✨ 응답된 기도</p><p style="font-size:0.8rem;margin-top:6px;line-height:1.4;">"어머니 수술이 성공적으로 끝났습니다. 하나님을 찬양합니다!"</p><p style="font-size:0.65rem;color:var(--m);margin-top:6px;">— 박유진 성도 · 1주 전 · 🙏 256명 참여</p></div>
+<div class="pray-card pray-a"><p style="font-weight:800;font-size:0.85rem;color:var(--g);">✨ 응답된 기도</p><p style="font-size:0.8rem;margin-top:6px;line-height:1.4;">"홀리온에서 만난 분과 약혼했어요! 믿음의 배우자를 주신 주님 감사합니다!"</p><p style="font-size:0.65rem;color:var(--m);margin-top:6px;">— 이동욱 성도 · 2주 전 · 🙏 342명 참여</p></div>
+
+<div class="sh"><h3>🕯️ 기도 요청</h3><div class="sl"></div></div>
+<div class="pray-card pray-r"><p style="font-weight:800;font-size:0.82rem;color:var(--r);">기도 부탁드립니다</p><p style="font-size:0.78rem;margin-top:6px;line-height:1.4;">"아버지께서 입원하셨습니다. 빠른 치유를 위해 기도해 주세요."</p><p style="font-size:0.62rem;color:var(--m);margin-top:5px;">— 최은혜 성도 · 2시간 전</p><button onclick="showToast('함께 기도합니다 🙏')" style="margin-top:8px;padding:7px 14px;border:none;background:var(--r);color:#fff;border-radius:8px;font-weight:700;font-size:0.68rem;cursor:pointer;">🙏 함께 기도하기 (84명)</button></div>
+<div class="pray-card pray-r"><p style="font-weight:800;font-size:0.82rem;color:var(--r);">기도 부탁드립니다</p><p style="font-size:0.78rem;margin-top:6px;line-height:1.4;">"대학원 논문 심사가 있습니다. 지혜와 평안을 위해 기도해 주세요."</p><p style="font-size:0.62rem;color:var(--m);margin-top:5px;">— 정민준 성도 · 5시간 전</p><button onclick="showToast('함께 기도합니다 🙏')" style="margin-top:8px;padding:7px 14px;border:none;background:var(--r);color:#fff;border-radius:8px;font-weight:700;font-size:0.68rem;cursor:pointer;">🙏 함께 기도하기 (52명)</button></div>
+<div class="pray-card pray-r"><p style="font-weight:800;font-size:0.82rem;color:var(--r);">기도 부탁드립니다</p><p style="font-size:0.78rem;margin-top:6px;line-height:1.4;">"선교지에서 복음을 전하고 있습니다. 안전과 동역을 위해 기도해 주세요."</p><p style="font-size:0.62rem;color:var(--m);margin-top:5px;">— 박선교 전도사 · 1일 전</p><button onclick="showToast('함께 기도합니다 🙏')" style="margin-top:8px;padding:7px 14px;border:none;background:var(--r);color:#fff;border-radius:8px;font-weight:700;font-size:0.68rem;cursor:pointer;">🙏 함께 기도하기 (127명)</button></div>
+<div class="cd" style="padding:14px;margin-top:10px;">
+    <textarea id="pn" placeholder="기도 제목을 적어주세요..." style="width:100%;border:none;resize:none;height:60px;font-family:var(--sn);font-size:0.8rem;line-height:1.5;"></textarea>
+    <button onclick="savePrayer()" style="margin-top:8px;width:100%;padding:10px;border:none;background:var(--g);color:#fff;border-radius:8px;font-weight:700;font-size:0.8rem;">기도 제목 올리기</button>
+</div>
+</div>
+
+<!-- ===== CHAT ===== -->
+<div id="s-chat" class="scr">
+<div class="sh"><h3>활성 대화</h3><div class="sl"></div></div>
+<div class="cd">
+    <div class="cr" onclick="showToast('채팅 기능 준비 중')"><img src="flower_deer_profile_1774101846766.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"><div style="flex:1;margin-left:8px;"><p style="font-weight:700;font-size:0.78rem;">베들레헴 꽃사슴 · INFP</p><p style="font-size:0.65rem;color:var(--m);margin-top:2px;">내일 예배 때 뵐 수 있을까요?</p></div><div style="text-align:right;"><p style="font-size:0.55rem;color:var(--g);font-weight:700;">12:30</p><div class="cu" style="margin-top:4px;">2</div></div></div>
+    <div class="cr" onclick="showToast('채팅 기능 준비 중')"><img src="esther_2d_profile.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"><div style="flex:1;margin-left:8px;"><p style="font-weight:700;font-size:0.78rem;">에스더 · ISFJ</p><p style="font-size:0.65rem;color:var(--m);margin-top:2px;">찬양 연습 일정 공유드려요!</p></div><div><p style="font-size:0.55rem;color:var(--m);">어제</p></div></div>
+</div>
+<div class="sh"><h3>그룹 채팅</h3><div class="sl"></div></div>
+<div class="cd">
+    <div class="cr" onclick="showToast('채팅 기능 준비 중')"><div style="width:40px;height:40px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;"><i data-lucide="users" style="color:#fff;width:16px;"></i></div><div style="flex:1;margin-left:8px;"><p style="font-weight:700;font-size:0.78rem;">청년 연합 기도모임</p><p style="font-size:0.65rem;color:var(--m);margin-top:2px;">금요 기도회 장소 안내</p></div><div class="cu">5</div></div>
+</div>
+</div>
+
+<!-- ===== MY ===== -->
+<div id="s-my" class="scr">
+<div class="cd" style="padding:22px;text-align:center;margin-top:14px;">
+    <div class="mav" style="width:75px;height:75px;"><i data-lucide="user" style="width:32px;height:32px;"></i></div>
+    <h2 style="font-family:var(--sf);font-size:1.15rem;margin-top:12px;">김하늘 성도님</h2>
+    <p style="color:var(--m);font-size:0.75rem;">인천 은혜교회 · 30세 · ENFP · 교사</p>
+    <p style="font-size:0.65rem;color:var(--g);margin-top:6px;">📖 "모든 것이 합력하여 선을 이루느니라" (롬 8:28)</p>
+    <p style="font-size:0.6rem;color:var(--m);margin-top:4px;">🙏 "좋은 배우자를 만나게 해주세요"</p>
+</div>
+<!-- 아이콘 메뉴 -->
+<div class="my-menu-grid">
+    <div class="my-menu-item" onclick="showToast('프로필 편집 준비 중')"><i data-lucide="edit-3"></i><p style="font-size:0.6rem;font-weight:700;">프로필</p></div>
+    <div class="my-menu-item" onclick="showToast('인증 완료 상태')"><i data-lucide="shield-check"></i><p style="font-size:0.6rem;font-weight:700;">본인인증</p></div>
+    <div class="my-menu-item" onclick="showToast('프리미엄 구독 관리')"><i data-lucide="crown"></i><p style="font-size:0.6rem;font-weight:700;">프리미엄</p></div>
+    <div class="my-menu-item" onclick="showToast('알림 설정')"><i data-lucide="bell"></i><p style="font-size:0.6rem;font-weight:700;">알림</p></div>
+    <div class="my-menu-item" onclick="showToast('매칭 기록 보기')"><i data-lucide="heart"></i><p style="font-size:0.6rem;font-weight:700;">매칭기록</p></div>
+    <div class="my-menu-item" onclick="showToast('결제 내역')"><i data-lucide="credit-card"></i><p style="font-size:0.6rem;font-weight:700;">결제</p></div>
+    <div class="my-menu-item" onclick="showToast('고객센터')"><i data-lucide="headphones"></i><p style="font-size:0.6rem;font-weight:700;">고객센터</p></div>
+    <div class="my-menu-item"><i data-lucide="log-out" style="color:var(--m);"></i><p style="font-size:0.6rem;font-weight:700;color:var(--m);">로그아웃</p></div>
+</div>
+
+<!-- 신앙가치관 테스트 -->
+<div class="sh"><h3>🕊️ 신앙가치관 테스트</h3><div class="sl"></div></div>
+<div id="faith-test">
+<div class="test-card" id="fq1">
+    <p class="test-q">Q1. 교회에서 가장 보람된 순간은?</p>
+    <div class="test-opt">
+        <button class="test-btn" onclick="faithAnswer(1,'다윗')">🎵 찬양으로 하나님을 높일 때</button>
+        <button class="test-btn" onclick="faithAnswer(1,'에스더')">🙏 중보기도로 누군가를 섬길 때</button>
+        <button class="test-btn" onclick="faithAnswer(1,'바울')">📖 말씀을 깊이 묵상할 때</button>
+        <button class="test-btn" onclick="faithAnswer(1,'마르다')">🤝 봉사로 형제자매를 도울 때</button>
+    </div>
+</div>
+<div class="test-card" id="fq2" style="display:none;">
+    <p class="test-q">Q2. 나의 기도 스타일은?</p>
+    <div class="test-opt">
+        <button class="test-btn" onclick="faithAnswer(2,'다윗')">🔥 뜨겁고 간절한 통성기도</button>
+        <button class="test-btn" onclick="faithAnswer(2,'에스더')">🤫 조용한 묵상기도</button>
+        <button class="test-btn" onclick="faithAnswer(2,'바울')">📝 기도 노트에 적으며 기도</button>
+        <button class="test-btn" onclick="faithAnswer(2,'마르다')">👥 함께하는 합심기도</button>
+    </div>
+</div>
+<div class="test-card" id="fq3" style="display:none;">
+    <p class="test-q">Q3. 배우자에게 가장 중요한 것은?</p>
+    <div class="test-opt">
+        <button class="test-btn" onclick="faithAnswer(3,'다윗')">🎶 함께 찬양할 수 있는 사람</button>
+        <button class="test-btn" onclick="faithAnswer(3,'에스더')">💪 신앙적 결단력이 있는 사람</button>
+        <button class="test-btn" onclick="faithAnswer(3,'바울')">📚 말씀을 사랑하는 사람</button>
+        <button class="test-btn" onclick="faithAnswer(3,'마르다')">🏠 가정을 섬기는 따뜻한 사람</button>
+    </div>
+</div>
+<div class="result-card" id="faith-result"></div>
+</div>
+
+<!-- NBTI 테스트 -->
+<div class="sh"><h3>🧬 NBTI 테스트</h3><div class="sl"></div></div>
+<div id="nbti-test">
+<div class="test-card" id="nq1">
+    <p class="test-q">Q1. 교제에서 나는?</p>
+    <div class="test-opt">
+        <button class="test-btn" onclick="nbtiAnswer(1,'E')">📢 먼저 적극적으로 다가간다</button>
+        <button class="test-btn" onclick="nbtiAnswer(1,'I')">🤗 상대가 먼저 다가오길 기다린다</button>
+    </div>
+</div>
+<div class="test-card" id="nq2" style="display:none;">
+    <p class="test-q">Q2. 신앙생활에서 나는?</p>
+    <div class="test-opt">
+        <button class="test-btn" onclick="nbtiAnswer(2,'S')">📅 규칙적 QT와 예배 출석 중시</button>
+        <button class="test-btn" onclick="nbtiAnswer(2,'N')">💭 영감과 감동 중심의 신앙생활</button>
+    </div>
+</div>
+<div class="test-card" id="nq3" style="display:none;">
+    <p class="test-q">Q3. 갈등이 생기면?</p>
+    <div class="test-opt">
+        <button class="test-btn" onclick="nbtiAnswer(3,'T')">🧠 논리적으로 대화해서 해결</button>
+        <button class="test-btn" onclick="nbtiAnswer(3,'F')">💝 감정을 먼저 공감하고 위로</button>
+    </div>
+</div>
+<div class="test-card" id="nq4" style="display:none;">
+    <p class="test-q">Q4. 데이트 계획은?</p>
+    <div class="test-opt">
+        <button class="test-btn" onclick="nbtiAnswer(4,'J')">📋 미리 계획하고 예약한다</button>
+        <button class="test-btn" onclick="nbtiAnswer(4,'P')">🎲 즉흥적으로 즐긴다</button>
+    </div>
+</div>
+<div class="result-card" id="nbti-result"></div>
+</div>
+</div>
+
+</main>
+
+<div class="mbg" id="pm" onclick="closeModal()"><div class="mbx" onclick="event.stopPropagation()"><h2 id="mn" style="font-family:var(--sf);margin-bottom:14px;"></h2><div id="mb" style="font-size:0.82rem;line-height:1.7;color:#555;"></div><div style="display:flex;gap:8px;margin-top:18px;"><button onclick="showToast('대화 신청 완료!');closeModal();" style="flex:1;padding:11px;border:none;background:var(--r);color:#fff;border-radius:10px;font-weight:800;cursor:pointer;">대화 신청</button><button onclick="closeModal()" style="flex:1;padding:11px;border:1px solid #eee;background:none;border-radius:10px;font-weight:700;cursor:pointer;">닫기</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<!-- Kakao Channel FAB -->
+<div class="kakao-fab" onclick="window.open('https://pf.kakao.com/_holyon','_blank')">💬</div>
+
+<nav class="bnav">
+    <div class="nb on" onclick="go('home','홈')"><i data-lucide="home"></i><span>홈</span></div>
+    <div class="nb" onclick="go('feed','피드')"><i data-lucide="layout-grid"></i><span>피드</span></div>
+    <div class="nb" onclick="go('bible','말씀')"><i data-lucide="book-open"></i><span>말씀</span></div>
+    <div class="nb" onclick="go('pray','기도')"><i data-lucide="heart"></i><span>기도</span></div>
+    <div class="nb" onclick="go('chat','채팅')"><i data-lucide="message-square"></i><span>채팅</span></div>
+    <div class="nb" onclick="go('my','마이')"><i data-lucide="user"></i><span>마이</span></div>
+</nav>
+
+<script>
+lucide.createIcons();
+function go(id,lbl){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.nb').forEach(n=>n.classList.remove('on'));document.getElementById('s-'+id).classList.add('on');event.currentTarget.classList.add('on');lucide.createIcons();document.querySelector('main').scrollTop=0;}
+function openProfile(n,a,i,p,mbti,job,verse,prayer){document.getElementById('mn').innerText=n+' ('+a+') · '+mbti;document.getElementById('mb').innerHTML='<p><b>소속:</b> '+i+'</p><p><b>직업:</b> '+job+'</p><p><b>MBTI:</b> '+mbti+'</p><p><b>신앙 일치율:</b> <span style="color:var(--g);font-weight:800;">'+p+'</span></p><hr style="margin:10px 0;border:none;border-top:1px solid #eee;"><p>📖 <b>좋아하는 구절:</b> '+verse+'</p><p>🙏 <b>기도 제목:</b> '+prayer+'</p><p style="margin-top:10px;color:var(--r);font-weight:700;">"43가지 신앙 질문에 매우 성실하게 응답하였습니다."</p>';document.getElementById('pm').style.display='flex';}
+function closeModal(){document.getElementById('pm').style.display='none';}
+function showToast(m){const t=document.getElementById('toast');t.innerText=m;t.style.opacity='1';setTimeout(()=>t.style.opacity='0',2500);}
+function toggleLike(e){e.classList.toggle('liked');if(e.classList.contains('liked')){e.style.color='var(--r)';showToast('❤️ 좋아요');}else{e.style.color='var(--t)';}}
+function savePrayer(){const n=document.getElementById('pn');if(n.value.trim()){showToast('🙏 기도 제목이 올라갔습니다.');n.value='';}else{showToast('기도 제목을 입력해 주세요.');}}
+
+// Faith Test
+let faithScores={};let faithStep=0;
+function faithAnswer(q,type){faithScores[type]=(faithScores[type]||0)+1;faithStep=q;
+document.getElementById('fq'+q).querySelectorAll('.test-btn').forEach(b=>{b.style.pointerEvents='none';if(b.textContent.includes(type==='다윗'?'찬양':type==='에스더'?'중보기도':type==='바울'?'말씀':'봉사')||b===event.target)b.classList.add('sel');});
+if(q<3){setTimeout(()=>{document.getElementById('fq'+(q+1)).style.display='block';},500);}else{setTimeout(()=>{
+let top=Object.entries(faithScores).sort((a,b)=>b[1]-a[1])[0][0];
+let desc={'다윗':'🎵 다윗형 — 찬양과 예배로 하나님을 높이는 열정적인 신앙인! 감성이 풍부하고 예술적 감각이 뛰어납니다.','에스더':'🙏 에스더형 — 중보기도와 영적 분별력이 뛰어난 기도의 용사! 조용하지만 강한 내면을 가졌습니다.','바울':'📖 바울형 — 말씀 연구와 깊은 신학적 이해를 가진 지성파! 논리적이며 진리를 추구합니다.','마르다':'🤝 마르다형 — 섬김과 봉사로 공동체를 세우는 실천가! 따뜻한 마음으로 주변을 돌봅니다.'};
+let r=document.getElementById('faith-result');r.style.display='block';r.innerHTML='<p style="font-size:0.7rem;color:var(--g);font-weight:700;">나의 신앙 유형은?</p><h2 style="font-size:1.3rem;margin:12px 0;">'+top+'형</h2><p style="font-size:0.82rem;line-height:1.5;">'+desc[top]+'</p>';},500);}}
+
+// NBTI Test
+let nbtiResult='';let nbtiStep=0;
+function nbtiAnswer(q,letter){nbtiResult+=letter;nbtiStep=q;
+event.target.classList.add('sel');document.getElementById('nq'+q).querySelectorAll('.test-btn').forEach(b=>b.style.pointerEvents='none');
+if(q<4){setTimeout(()=>{document.getElementById('nq'+(q+1)).style.display='block';},500);}else{setTimeout(()=>{
+let r=document.getElementById('nbti-result');r.style.display='block';r.innerHTML='<p style="font-size:0.7rem;color:var(--g);font-weight:700;">나의 NBTI 유형은?</p><h2 style="font-size:1.5rem;margin:12px 0;">'+nbtiResult+'</h2><p style="font-size:0.82rem;line-height:1.5;">당신의 신앙 교제 성향: <b>'+nbtiResult+'</b><br>이 유형과 가장 잘 맞는 상대를 AI가 추천해 드립니다!</p>';},500);}}
+</script>
+</body>
+</html>
